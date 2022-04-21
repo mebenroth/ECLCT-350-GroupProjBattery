@@ -10,7 +10,7 @@ class VoltageSource : public Device
     // Constructor (Va, f, and phi are optional arguments):
 
     //VoltageSource(int nodei, int nodej, double Vdc, double Va=0.0, double f=0.0, double phi=0.0);
-    VoltageSource(int nodei, int nodej, double A = -1.031, double k = -35.0, double a0 = 3.685, double a1 = 0.2156,
+    VoltageSource(int nodei, int nodej, double SOC, double, double k = -35.0, double a0 = 3.685, double a1 = 0.2156,
         double a2 = -0.1178, double a3 = 0.3201);
     // Device interface:
     
@@ -33,6 +33,7 @@ class VoltageSource : public Device
     double Va;
     double f;
     double phi;*/
+    double SOC;
     double A;
     double k;
     double a0;
@@ -43,7 +44,7 @@ class VoltageSource : public Device
 };
 
 
-VoltageSource::VoltageSource(int nodei, int nodej, double A, double k, double a0, double a1, double a2, double a3)
+VoltageSource::VoltageSource(int nodei, int nodej,double SOC, double A, double k, double a0, double a1, double a2, double a3)
 {
     this->nodei = nodei;
     this->nodej = nodej;
@@ -51,7 +52,7 @@ VoltageSource::VoltageSource(int nodei, int nodej, double A, double k, double a0
     this->Va = Va;
     this->f = f;
     this->phi = phi;*/
-
+    this->SOC = SOC;
     this->A = A;
     this->k = k;
     this->a0 = a0;
@@ -69,7 +70,7 @@ void VoltageSource::Init()
 void VoltageSource::Step(double t, double dt)
 {
     //double v = Vdc + Va * sin(2.0 * M_PI * f * t + phi);
-    double v = A * exp(k* GetSOC()) + a0 + a1 * GetSOC() + a2 * (GetSOC())^2) + a3 * (GetSOC())^3;
+    double v = -1.031 *  * exp(-35.0 * GetSOC()) + a0 + a1 * GetSOC() + a2 * (GetSOC())^2) + a3 * (GetSOC())^3;
     
     AddJacobian(nodei, nodep, 1.0);
     AddJacobian(nodej, nodep, -1.0);
